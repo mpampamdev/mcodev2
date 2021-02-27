@@ -233,7 +233,7 @@ function delete($id)
     set_message("success",cclang("notif_delete"));
     }
 
-    redirect("backend/main_menu");
+    redirect(url("main_menu"));
 }
 
 
