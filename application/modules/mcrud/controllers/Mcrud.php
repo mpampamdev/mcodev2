@@ -114,14 +114,14 @@ class Mcrud extends Backend{
                                     );
 
 
-      $show_in_filter = $this->mcrud_build->showInFilter();
-      if (count($show_in_filter) > 0) {
-      $builder_filter = $this->parser->parse($template_crud_path.'build_filter', $data, true);
-			write_file($view_path.'filter.php', $builder_filter);
-      $insert_role_access[] = array('permission' => strtolower($controllers)."_filter",
-                                    'definition' =>"Module ".strtolower($controllers)
-                                  );
-    }
+    //   $show_in_filter = $this->mcrud_build->showInFilter();
+    //   if (count($show_in_filter) > 0) {
+    //   $builder_filter = $this->parser->parse($template_crud_path.'build_filter', $data, true);
+		// 	write_file($view_path.'filter.php', $builder_filter);
+    //   $insert_role_access[] = array('permission' => strtolower($controllers)."_filter",
+    //                                 'definition' =>"Module ".strtolower($controllers)
+    //                               );
+    // }
 
       $show_in_view = $this->mcrud_build->showInView();
       if (count($show_in_view) > 0) {
