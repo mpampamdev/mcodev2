@@ -6,6 +6,8 @@
 <?php if (formType($field) == "datetime" OR formType($field) == "timestamp"): ?>
     <input type="datetime-local" id="<?=$field?>" class="form-control form-control-sm" placeholder="<?=label($field)?>" />
 <?php elseif(formType($field) == "time"): ?>
+    <input type="datetime-local" id="<?=$field?>" class="form-control form-control-sm" placeholder="<?=label($field)?>" />
+<?php elseif(formType($field) == "time"): ?>
     <input type="time" id="<?=$field?>" class="form-control form-control-sm" placeholder="<?=label($field)?>" />
 <?php elseif(formType($field) == "select"): ?>
     <select class="form-control form-control-sm select2" data-placeholder=" -- Select <?=label($field)?> -- " name="<?=$field?>" id="<?=$field?>">

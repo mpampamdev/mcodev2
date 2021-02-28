@@ -13,10 +13,71 @@
           <a href="{php_open_tag_echo}url("<?=strtolower($controller)?>/add"){php_close_tag}" class="btn btn-sm btn-success btn-icon-text"><i class="fa fa-file btn-icon-prepend"></i>{php_open_tag_echo}cclang("add_new"){php_close_tag}</a>
 <?php endif; ?>
           <button type="button" id="reload" class="btn btn-sm btn-info-2 btn-icon-text"><i class="mdi mdi-backup-restore btn-icon-prepend"></i> <?=cclang("reload")?></button>
-    <?php if (count($show_in_filter) > 0): ?>
-      <a href="{php_open_tag_echo}url("<?=strtolower($controller)?>/filter/"){php_close_tag}" id="filter-show" class="btn btn-sm btn-primary btn-icon-text"><i class="mdi mdi-magnify btn-icon-prepend"></i> Filter</a>
-    <?php endif; ?>
-    </div>
+<?php if (count($show_in_filter) > 0): ?>
+          <a href="{php_open_tag_echo}url("<?=strtolower($controller)?>/filter/"){php_close_tag}" id="filter-show" class="btn btn-sm btn-primary btn-icon-text"><i class="mdi mdi-magnify btn-icon-prepend"></i> Filter</a>
+<?php endif; ?>
+        </div>
+
+        <form autocomplete="off" class="content-filter">
+          <div class="row">
+<?php foreach ($show_in_filter as $field): ?>
+            <div class="form-group col-md-6">
+<?php if (formType($field) == "datetime" OR formType($field) == "timestamp"): ?>
+              <input type="datetime-local" id="<?=$field?>" class="form-control form-control-sm" placeholder="<?=label($field)?>" />
+<?php elseif(formType($field) == "date"): ?>
+              <input type="date" id="<?=$field?>" class="form-control form-control-sm" placeholder="<?=label($field)?>" />
+<?php elseif(formType($field) == "time"): ?>
+              <input type="time" id="<?=$field?>" class="form-control form-control-sm" placeholder="<?=label($field)?>" />
+<?php elseif(formType($field) == "select"): ?>
+              <select class="form-control form-control-sm select2" data-placeholder=" -- Select <?=label($field)?> -- " name="<?=$field?>" id="<?=$field?>">
+                <option value=""></option>
+<?php
+    $fieldOption = optionValue($field);
+    for ($x=0; $x < count($fieldOption) ; $x++) {
+?>
+                <option value="<?=$fieldOption[$x]['value']?>"><?=$fieldOption[$x]['label']?></option>
+<?php  } ?>
+              </select>
+<?php elseif(formType($field) == "option"): ?>
+                <label class="mb-0"><?=label($field)?></label>
+<?php
+    $fieldOption = optionValue($field);
+    for ($x=0; $x < count($fieldOption) ; $x++) {
+?>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" id="<?=$field?>" name="<?=$field?>" value="<?=$fieldOption[$x]['value']?>">
+                    <?=$fieldOption[$x]['label']?>
+                    <i class="input-helper"></i>
+                  </label>
+                </div>
+<?php  } ?>
+<?php elseif(formType($field) == "option_relation"): ?>
+                <label class="mb-0"><?=label($field)?></label>
+                        <!--
+                          app_helper.php - methode is_radio
+                          is_radio("table", "attribute`id & name`", "value", "label", "entry_value`optional`");
+                        --->
+                {php_open_tag_echo}is_radio_filter("<?=optionRelation($field, "relation_table")?>","<?=$field?>","<?=optionRelation($field, "relation_value")?>","<?=optionRelation($field, "relation_label")?>");{php_close_tag}
+<?php elseif(formType($field) == "select_relation"): ?>
+                        <!--
+                          app_helper.php - methode is_select
+                          is_select("table", "attribute`id & name`", "value", "label", "entry_value`optional`");
+                        --->
+                {php_open_tag_echo}is_select_filter("<?=optionRelation($field, "relation_table")?>","<?=$field?>","<?=optionRelation($field, "relation_value")?>","<?=optionRelation($field, "relation_label")?>","<?=label($field)?>");{php_close_tag}
+<?php else: ?>
+              <input type="text" id="<?=$field?>" class="form-control form-control-sm" placeholder="<?=label($field)?>" />
+<?php endif; ?>
+            </div>
+
+<?php endforeach; ?>
+            <div class="col-md-12">
+              <button type='button' class='btn btn-default btn-sm' id="filter-cancel">{php_open_tag_echo}cclang("cancel"){php_close_tag}</button>
+              <button type="button" class="btn btn-primary btn-sm" id="filter">Filter</button>
+            </div>
+          </div>
+        </form>
+
         <table class="table table-bordered table-striped" id="table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
           <thead>
             <tr><?php $show_in_table = $this->mcrud_build->showInTable(true);
@@ -50,7 +111,7 @@ var table;
       "order": [], //Initial no order.
       "ordering": true,
       "searching": false,
-      "info": false,
+      "info": true,
       "bLengthChange": false,
       oLanguage: {
           sProcessing: '<i class="fa fa-spinner fa-spin fa-fw"></i> Loading...'
@@ -94,21 +155,30 @@ var table;
     });
 
   $("#reload").click(function(){
-    <?php if(count($show_in_filter) > 0): ?>
-  <?php foreach ($show_in_filter as $field) { ?>
+<?php if(count($show_in_filter) > 0): ?>
+<?php foreach ($show_in_filter as $field) { ?>
   $("#<?=$field?>").val("");
-  <?php }?>
-  <?php endif; ?>
-  table.ajax.reload(null, false);
+<?php }?>
+<?php endif; ?>
+  table.ajax.reload();
   });
 
+<?php if(count($show_in_filter) > 0): ?>
   $(document).on("click","#filter-show",function(e){
     e.preventDefault();
-    $('.modal-dialog').addClass('modal-md');
-    $("#modalTitle").text('Filter');
-    $('#modalContent').load($(this).attr('href'));
-    $("#modalGue").modal('show');
+    $(".content-filter").slideDown();
   });
+
+  $(document).on("click","#filter",function(e){
+    e.preventDefault();
+    $("#table").DataTable().ajax.reload();
+  })
+
+  $(document).on("click","#filter-cancel",function(e){
+    e.preventDefault();
+    $(".content-filter").slideUp();
+  });
+<?php endif; ?>
 
   $(document).on("click","#delete",function(e){
     e.preventDefault();

@@ -453,6 +453,13 @@ border-color: #166ac1!important;
   padding: 0.875rem 0.375rem!important;
 }
 
+.content-filter{
+  display: none;
+  border: 1px solid #d0d0d0;
+  padding: 15px 10px 10px 10px;
+  margin: 5px 1px 1px 1px;
+}
+
 /*delay animation*/
 /*.delay-2s{
   animation-delay: 0.2s;

@@ -53,6 +53,8 @@ public function __construct()
         {
 <?php if (formType($field) == "datetime" OR formType($field) == "timestamp"): ?>
           $this->db->like("<?=$table_name?>.<?=$field?>", date('Y-m-d H:i',strtotime($this->input->post("<?=$field?>"))));
+<?php elseif(formType($field) == "date"): ?>
+          $this->db->like("<?=$table_name?>.<?=$field?>", date('Y-m-d',strtotime($this->input->post("<?=$field?>"))));
 <?php elseif(formType($field) == "time"): ?>
           $this->db->like("<?=$table_name?>.<?=$field?>", date('H:i',strtotime($this->input->post("<?=$field?>"))));
 <?php else: ?>
