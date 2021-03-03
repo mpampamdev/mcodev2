@@ -13,6 +13,11 @@
           <td><?=label($field)?></td>
           <td>{php_open_tag_echo}$<?=$field?> != "" ? date('d-m-Y H:i',strtotime($<?=$field?>)):""{php_close_tag}</td>
         </tr>
+<?php elseif (formType($field) == "date"): ?>
+      <tr>
+        <td><?=label($field)?></td>
+        <td>{php_open_tag_echo}$<?=$field?> != "" ? date('d-m-Y',strtotime($<?=$field?>)):""{php_close_tag}</td>
+      </tr>
 <?php elseif (formType($field) == "time"): ?>
         <tr>
           <td><?=label($field)?></td>
