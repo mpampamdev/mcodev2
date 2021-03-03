@@ -211,13 +211,11 @@ function update($id)
     $data = array('action' => url("<?=strtolower($controller)?>/update_action/$id"),
 <?php foreach ($show_in_update AS $field): ?>
 <?php if (formType($field) == "date"): ?>
-                  '<?=$field?>' => date("Y-m-d",  strtotime($row-><?=$field?>)),
+                  '<?=$field?>' => $row-><?=$field?> == "" ? "":date("Y-m-d",  strtotime($row-><?=$field?>)),
 <?php elseif(formType($field) == "time"): ?>
-                  '<?=$field?>' => date("H:i",  strtotime($row-><?=$field?>)),
+                  '<?=$field?>' => $row-><?=$field?> == "" ? "":date("H:i",  strtotime($row-><?=$field?>)),
 <?php elseif(formType($field) == "datetime"): ?>
-                  '<?=$field?>' => date("Y-m-d",  strtotime($row-><?=$field?>))."T".date("H:i",  strtotime($row-><?=$field?>)),
-<?php elseif(formType($field) == "timestamp"): ?>
-                  '<?=$field?>' => date("Y-m-d H:i"),
+                  '<?=$field?>' => $row-><?=$field?> == "" ? "":date("Y-m-d",  strtotime($row-><?=$field?>))."T".date("H:i",  strtotime($row-><?=$field?>)),
 <?php else: ?>
                   '<?=$field?>' => set_value("<?=$field?>", $row-><?=$field?>),
 <?php endif; ?>
