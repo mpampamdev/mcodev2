@@ -450,12 +450,12 @@ class Migration_mpampam extends CI_Migration {
 
 
 
-   public function down()
-   {
-     $tables = $this->db->query('SHOW TABLES FROM '.$this->db->database)->result();
-            foreach ($tables as $table) {
-                $tab = array_values((array)$table)[0];
-                $this->dbforge->drop_table($tab);
-            } 
-   }
+   // public function down()
+   // {
+   //   $tables = $this->db->query('SHOW TABLES FROM '.$this->db->database)->result();
+   //          foreach ($tables as $table) {
+   //              $tab = array_values((array)$table)[0];
+   //              $this->dbforge->drop_table($tab);
+   //          }
+   // }
 }
