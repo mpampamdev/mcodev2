@@ -39,7 +39,7 @@
   $fieldOption = optionValue($field);
   for ($x=0; $x < count($fieldOption) ; $x++) {
 ?>
-              <option {php_open_tag_echo}($<?=$field?> == <?=$fieldOption[$x]['value']?> ? "selected":""){php_close_tag} value="<?=$fieldOption[$x]['value']?>"><?=$fieldOption[$x]['label']?></option>
+              <option {php_open_tag_echo}($<?=$field?> == "<?=$fieldOption[$x]['value']?>" ? "selected":""){php_close_tag} value="<?=$fieldOption[$x]['value']?>"><?=$fieldOption[$x]['label']?></option>
 <?php  } ?>
             </select>
 <?php elseif(formType($field) == "option"): ?>
@@ -49,7 +49,7 @@ for ($x=0; $x < count($fieldOption) ; $x++) {
 ?>
             <div class="form-check">
               <label class="form-check-label">
-                <input type="radio" {php_open_tag_echo}($<?=$field?> == <?=$fieldOption[$x]['value']?> ? "checked":""){php_close_tag} class="form-check-input" name="<?=$field?>" value="<?=$fieldOption[$x]['value']?>">
+                <input type="radio" {php_open_tag_echo}($<?=$field?> == "<?=$fieldOption[$x]['value']?>" ? "checked":""){php_close_tag} class="form-check-input" name="<?=$field?>" value="<?=$fieldOption[$x]['value']?>">
                 <?=$fieldOption[$x]['label']?>
 
                 <i class="input-helper"></i>
