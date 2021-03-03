@@ -71,6 +71,7 @@ class Wizard extends CI_Controller{
       $this->form_validation->set_error_delimiters('','');
 
       if ($this->form_validation->run()) {
+         $list_table = $this->db->list_tables();
         if ($this->check_connection()) {
           $hostname 	= $this->input->post('db_host');
           $username 	= $this->input->post('db_username');
@@ -83,13 +84,14 @@ class Wizard extends CI_Controller{
                        'db_username' => $username,
                        'db_password' => $password,
                       );
+
           $this->set_db($arr);
 
           $this->load->library('migration');
-          if ($this->migration->current()) {
-            $json['success'] = true;
-          }else {
+          if ($this->migration->version(1) === false) {
             $json['msg'] = "error migration";
+          }else {
+            $json['success'] = true;
           }
         }else {
           $json['msg'] = "Unable to connect the database";
