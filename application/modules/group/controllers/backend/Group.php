@@ -211,7 +211,7 @@ class Group extends Backend{
     $this->is_allowed('groups_access');
     if ($row = $this->model->find(dec_url($id))) {
       $this->template->set_title("Group ".cclang("access_control"));
-      $data = array('action' => url("Group/save_acces_control/$id"),
+      $data = array('action' => url("group/save_acces_control/$id"),
                     'group' => set_value("group", $row->group),
                     'definition' => set_value("definition", $row->definition),
                     'list' => $this->model->list_control_access(dec_url($id))
