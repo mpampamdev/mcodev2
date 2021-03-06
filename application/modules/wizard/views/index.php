@@ -218,39 +218,10 @@
           }
 
 
-          else if(currentIndex==2){
-            if (currentIndex < newIndex) {
-              let data = new FormData();
-              data.append("db_host", $("#db_host").val());
-              data.append("db_name", $("#db_name").val());
-              data.append("db_username", $("#db_username").val());
-              data.append("db_password", $("#db_password").val());
-              $.ajax({
-                url:"<?=base_url()?>wizard/wizard/database_configuration",
-                type:"post",
-                dataType: 'json',
-                data:data,
-                cache: false,
-                contentType: false,
-                processData: false,
-                async: false,
-                success:function(json){
-                  if (json.success == true) {
-                    bol = true;
-                  }else {
-                    swal(json.msg, {
-                      icon:"error"
-                    })
-                  }
-                }
-              });
-            }else {
-              bol = true;
-            }
-          }
 
 
-          else if (currentIndex==3) {
+
+          else if (currentIndex==2) {
             if (currentIndex < newIndex) {
               let data = new FormData();
               data.append("url_suffix", $("#url_suffix").val());
@@ -283,7 +254,7 @@
           }
 
 
-          else if (currentIndex==4) {
+          else if (currentIndex==3) {
             if (currentIndex < newIndex) {
               let data = new FormData();
               data.append("db_host", $("#db_host").val());
@@ -322,7 +293,7 @@
             }else {
               bol = true;
             }
-          }else if (currentIndex==5) {
+          }else if (currentIndex==4) {
             bol = true;
           }
 
