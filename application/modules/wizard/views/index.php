@@ -132,7 +132,7 @@
 
                       <?php $this->load->view("system_requirement") ?>
 
-                      <?php $this->load->view("database_configuration") ?>
+                      <!-- <?php $this->load->view("database_configuration") ?> -->
 
                       <?php $this->load->view("system_configuration") ?>
 

@@ -50,51 +50,11 @@ class Wizard extends CI_Controller{
       $this->form_validation->set_rules("dir_file_permission[]","* Directory & File Permission","trim|required|callback__cek_dir");
       $this->form_validation->set_error_delimiters('','');
       if ($this->form_validation->run()) {
-        $json['success'] = true;
-      }else {
-        $json['msg'] = validation_errors();
-      }
-
-      echo json_encode($json);
-    }
-  }
-
-  function database_configuration()
-  {
-    if ($this->input->is_ajax_request()) {
-      $json = array('success' => false, "msg" => array());
-
-      $this->form_validation->set_rules("db_name","* Database Name","trim|required");
-      $this->form_validation->set_rules("db_host","* Database Host","trim|required");
-      $this->form_validation->set_rules("db_username","* Username","trim|required");
-      $this->form_validation->set_rules("db_password","* Password","trim");
-      $this->form_validation->set_error_delimiters('','');
-
-      if ($this->form_validation->run()) {
-         $list_table = $this->db->list_tables();
-        if ($this->check_connection()) {
-          $hostname 	= $this->input->post('db_host');
-          $username 	= $this->input->post('db_username');
-          $password 	= $this->input->post('db_password');
-          $dbname 	  = $this->input->post('db_name');
-
-          $arr = array("open_php" => "<?php",
-                       'db_name' => $dbname,
-                       'db_host' => $hostname,
-                       'db_username' => $username,
-                       'db_password' => $password,
-                      );
-
-          $this->set_db($arr);
-
-          $this->load->library('migration');
-          if ($this->migration->version(1) === false) {
-            $json['msg'] = "error migration";
-          }else {
-            $json['success'] = true;
-          }
+        $this->load->library('migration');
+        if ($this->migration->version(1) === false) {
+          $json['msg'] = "error migration";
         }else {
-          $json['msg'] = "Unable to connect the database";
+          $json['success'] = true;
         }
       }else {
         $json['msg'] = validation_errors();
@@ -103,6 +63,51 @@ class Wizard extends CI_Controller{
       echo json_encode($json);
     }
   }
+
+  // function database_configuration()
+  // {
+  //   if ($this->input->is_ajax_request()) {
+  //     $json = array('success' => false, "msg" => array());
+  //
+  //     $this->form_validation->set_rules("db_name","* Database Name","trim|required");
+  //     $this->form_validation->set_rules("db_host","* Database Host","trim|required");
+  //     $this->form_validation->set_rules("db_username","* Username","trim|required");
+  //     $this->form_validation->set_rules("db_password","* Password","trim");
+  //     $this->form_validation->set_error_delimiters('','');
+  //
+  //     if ($this->form_validation->run()) {
+  //        $list_table = $this->db->list_tables();
+  //       if ($this->check_connection()) {
+  //         $hostname 	= $this->input->post('db_host');
+  //         $username 	= $this->input->post('db_username');
+  //         $password 	= $this->input->post('db_password');
+  //         $dbname 	  = $this->input->post('db_name');
+  //
+  //         $arr = array("open_php" => "<?php",
+  //                      'db_name' => $dbname,
+  //                      'db_host' => $hostname,
+  //                      'db_username' => $username,
+  //                      'db_password' => $password,
+  //                     );
+  //
+  //         $this->set_db($arr);
+  //
+  //         $this->load->library('migration');
+  //         if ($this->migration->version(1) === false) {
+  //           $json['msg'] = "error migration";
+  //         }else {
+  //           $json['success'] = true;
+  //         }
+  //       }else {
+  //         $json['msg'] = "Unable to connect the database";
+  //       }
+  //     }else {
+  //       $json['msg'] = validation_errors();
+  //     }
+  //
+  //     echo json_encode($json);
+  //   }
+  // }
 
   function system_configuration()
   {
